@@ -6,13 +6,19 @@ import { COMMENTS } from "../shared/comments";
 import { ScrollView } from "react-native-gesture-handler";
 import { connect } from "react-redux";
 import { baseUrl } from "../shared/baseUrl";
+import { postFavorite } from "../redux/ActionCreators";
 
 const mapStateToProps = (state) => {
   return {
     dishes: state.dishes,
     comments: state.comments,
+    favorites: state.favorites,
   };
 };
+
+const mapDispatchToProps = (dispatch) => ({
+  postFavorite: (dishId) => dispatch(postFavorite(dishId)),
+});
 
 function RenderDish(props) {
   const dish = props.dish;
@@ -74,8 +80,8 @@ class Dishdetail extends Component {
     };
   }
 
-  markFavorite(dishID) {
-    this.setState({ favorites: this.state.favorites.concat(dishID) });
+  markFavorite(dishId) {
+    this.props.postFavorite(dishId);
   }
 
   render() {
@@ -84,7 +90,7 @@ class Dishdetail extends Component {
       <ScrollView>
         <RenderDish
           dish={this.props.dishes.dishes[+dishId]}
-          favorite={this.state.favorites.some((ele) => ele === dishId)}
+          favorite={this.props.favorites.some((ele) => ele === dishId)}
           onPress={() => this.markFavorite(dishId)}
         />
         <RenderCommemts
@@ -96,4 +102,4 @@ class Dishdetail extends Component {
     );
   }
 }
-export default connect(mapStateToProps)(Dishdetail);
+export default connect(mapStateToProps, mapDispatchToProps)(Dishdetail);
