@@ -8,13 +8,15 @@
     "test": "jest"
   },
   "dependencies": {
-    "@react-native-community/async-storage": "~1.11.0",
+    "@react-native-community/async-storage": "^1.11.0",
     "@react-native-community/datetimepicker": "^3.0.1",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-navigation/drawer": "^5.9.0",
     "@react-navigation/native": "^5.7.3",
     "@react-navigation/stack": "^5.9.0",
     "expo": "~38.0.9",
+    "expo-permissions": "^9.1.0",
+    "expo-secure-store": "^9.1.0",
     "expo-splash-screen": "^0.5.0",
     "expo-status-bar": "^1.0.0",
     "expo-updates": "~0.2.10",

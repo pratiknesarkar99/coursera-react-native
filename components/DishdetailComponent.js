@@ -142,7 +142,12 @@ function RenderCommemts(props) {
   };
 
   return (
-    <Animatable.View animation="fadeInUp" duration={2000} delay={1000}>
+    <Animatable.View
+      animation="fadeInUp"
+      duration={2000}
+      delay={1000}
+      useNativeDriver
+    >
       <Card title="Comments">
         <FlatList
           data={comments}
