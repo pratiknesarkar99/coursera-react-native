@@ -31,12 +31,13 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 function RenderDish(props) {
-  handleViewRef = (ref) => (this.view = ref);
-
   const dish = props.dish;
 
+  handleViewRef = (ref) => (this.view = ref);
+
   const recognizeDrag = ({ moveX, moveY, dx, dy }) => {
-    if (dx < -200) return true;
+    if (dx < -200) return "rtl";
+    else if (dx > 200) return "ltr";
     else return false;
   };
 
@@ -53,7 +54,9 @@ function RenderDish(props) {
     },
     onPanResponderEnd: (e, gestureState) => {
       console.log("pan responder end", gestureState);
-      if (recognizeDrag(gestureState))
+      const dragged = recognizeDrag(gestureState);
+
+      if (dragged === "rtl") {
         Alert.alert(
           "Add Favorite",
           "Are you sure you wish to add " + dish.name + " to favorite?",
@@ -74,7 +77,9 @@ function RenderDish(props) {
           ],
           { cancelable: false }
         );
-
+      } else if (dragged === "ltr") {
+        props.onPressAddComment();
+      }
       return true;
     },
   });
@@ -87,6 +92,7 @@ function RenderDish(props) {
         delay={1000}
         {...panResponder.panHandlers}
         ref={this.handleViewRef}
+        useNativeDriver
       >
         <Card featuredTitle={dish.name} image={{ uri: baseUrl + dish.image }}>
           <Text style={{ margin: 10 }}>{dish.description}</Text>

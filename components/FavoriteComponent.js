@@ -55,7 +55,11 @@ class Favorites extends Component {
         },
       ];
       return (
-        <Animatable.View animation="fadeInRightBig" duration={2000}>
+        <Animatable.View
+          animation="fadeInRightBig"
+          duration={2000}
+          useNativeDriver
+        >
           <Swipeout right={rightButton} autoClose={true}>
             <ListItem
               key={index}
