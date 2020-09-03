@@ -18,6 +18,8 @@ import Moment from "moment";
 import * as Animatable from "react-native-animatable";
 import { Notifications } from "expo";
 import * as Permissions from "expo-permissions";
+import * as Calendar from "expo-calendar";
+import { CALENDAR } from "expo-permissions";
 
 class Reservation extends Component {
   constructor(props) {
@@ -48,6 +50,58 @@ class Reservation extends Component {
     title: "Reserve Table",
   };
 
+  obtainCalenderPermission = async () => {
+    let permission = await Permissions.getAsync(Permissions.CALENDAR);
+
+    if (permission.status !== "granted") {
+      permission = await Permissions.askAsync(Permissions.CALENDAR);
+      if (permission.status !== "granted") {
+        Alert.alert("Permission not granted");
+      }
+    }
+    return permission;
+  };
+
+  getDefaultCalendarSource = async () => {
+    const calendars = await Calendar.getCalendarsAsync();
+    const defaultCalendars = calendars.filter(
+      (each) => each.source.name === "Default"
+    );
+    return defaultCalendars[0].source;
+  };
+
+  handleReservationToCalendar = async (date) => {
+    await this.obtainCalenderPermission();
+
+    const defaultCalendarSource =
+      Platform.OS === "ios"
+        ? await getDefaultCalendarSource()
+        : { isLocalAccount: true, name: "Expo Calendar" };
+
+    const tempDate = Date.parse(date);
+    const startDate = new Date(tempDate);
+    const endDate = new Date(tempDate + 2 * 60 * 60 * 1000);
+
+    const calendarID = await Calendar.createCalendarAsync({
+      title: "Expo Calendar",
+      color: "blue",
+      entityType: Calendar.EntityTypes.EVENT,
+      sourceId: defaultCalendarSource.id,
+      source: defaultCalendarSource,
+      name: "internalCalendarName",
+      ownerAccount: "personal",
+      accessLevel: Calendar.CalendarAccessLevel.OWNER,
+    });
+
+    await Calendar.createEventAsync(calendarID, {
+      title: "Con Fusion Table Reservation",
+      startDate: startDate,
+      endDate: endDate,
+      timeZone: "Asia/Hong_Kong",
+      location:
+        "121, Clear Water Bay Road, Clear Water Bay, Kowloon, Hong Kong",
+    });
+  };
   toggleModal() {
     this.setState({ showModal: !this.state.showModal });
   }
@@ -73,14 +127,8 @@ class Reservation extends Component {
         {
           text: "OK",
           onPress: () => {
-            /* this.presentLocalNotification(this.state.date);
-            if (this.state.date) {
-              const calPer = this.obtainCalendarPermission();
-              if (calPer) {
-                this.addReservationToCalendar(this.state.date);
-              }
-            }*/
             this.presentLocalNotification(this.state.date);
+            this.handleReservationToCalendar(this.state.date);
             this.resetForm();
           },
         },
