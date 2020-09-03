@@ -15,6 +15,7 @@
     "@react-navigation/native": "^5.7.3",
     "@react-navigation/stack": "^5.9.0",
     "expo": "~38.0.9",
+    "expo-mail-composer": "^8.3.0",
     "expo-permissions": "^9.1.0",
     "expo-secure-store": "^9.1.0",
     "expo-splash-screen": "^0.5.0",
