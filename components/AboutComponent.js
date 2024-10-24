@@ -16,7 +16,7 @@ const mapStateToProps = (state) => {
 
 class AboutUs extends Component {
   static navigationOptions = {
-    title: "About Us",
+    title: "About The Restaurants",
   };
 
   render() {
@@ -46,12 +46,12 @@ class AboutUs extends Component {
         <ScrollView>
           <Animatable.View
             animation="fadeInDown"
-            duration={2000}
-            delay={1000}
+            duration={1900}
+            delay={1100}
             useNativeDriver
           >
             <History />
-            <Card title="Corporate Leadership">
+            <Card title="Corporate Leadership Section">
               <Text>{this.props.leaders.errMess}</Text>
             </Card>
           </Animatable.View>
